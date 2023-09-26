@@ -1,0 +1,1 @@
+. "/Users/avaidy15/Coding_Practice/IPC-Practice/build/Debug/generators/conanbuildenv-debug-armv8.sh"
