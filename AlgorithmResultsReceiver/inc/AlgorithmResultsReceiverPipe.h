@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 #include "IAlgorithmResultsReceiver.h"
@@ -9,7 +11,7 @@ class AlgorithmResultsReceiverPipe final : public IAlgorithmResultsReceiver
 
 public:
     explicit AlgorithmResultsReceiverPipe(const std::string &pipeName);
-    ~AlgorithmResultsReceiverPipe();
+    ~AlgorithmResultsReceiverPipe() = default;
 
-    virtual const bool receiveAlgorithmResults(AlgorithmResults &) const override;
+    virtual const bool receiveAlgorithmResults(AlgorithmResults &) override;
 };

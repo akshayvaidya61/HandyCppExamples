@@ -6,6 +6,10 @@ file(GLOB SRC_FILES ./src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SRC_FILES})
 
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    AlgorithmResultsReceiver
+) 
+
 target_include_directories(${PROJECT_NAME} PUBLIC
     ./inc
     ../common/inc

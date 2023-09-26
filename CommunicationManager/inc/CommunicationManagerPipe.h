@@ -19,4 +19,6 @@ public:
     virtual ~CommunicationManagerPipe();
 
     int getPipe() const;
+
+    int pipeFlusher() const;
 };

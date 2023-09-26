@@ -4,10 +4,12 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <string>
-#include <thread>
-#include <chrono>
+#include <sys/ioctl.h>
 
 #include "CommunicationManagerPipe.h"
+
+static constexpr int MAX_PIPE_SIZE = 4096; // maximum size of the pipe
+static constexpr int FLUSH_THRESHOLD = 3;  // MAX_PIPE_SIZE / 2; // flush when pipe is half full
 
 void CommunicationManagerPipe::sendAlgorithmResults(const AlgorithmResults &algorithmResults)
 {
@@ -17,12 +19,10 @@ void CommunicationManagerPipe::sendAlgorithmResults(const AlgorithmResults &algo
 
     // write the struct itself
     write(mPipe, &algorithmResults, size);
-
-    std::cout << "Data: " << algorithmResults.frameCount << std::endl;
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000U));
 }
 
+// TODO Write a fault reporter implementation that reports the current fault
+// reason.
 void CommunicationManagerPipe::reportFault()
 {
 }
@@ -52,4 +52,26 @@ CommunicationManagerPipe::~CommunicationManagerPipe()
 int CommunicationManagerPipe::getPipe() const
 {
     return mPipe;
+}
+
+// TODO Does not work yet
+int CommunicationManagerPipe::pipeFlusher() const
+{
+    int free_space;
+    if (ioctl(mPipe, FIONREAD, &free_space) == -1)
+    {
+        std::cerr << "Error getting pipe status: " << strerror(errno) << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    if (free_space <= FLUSH_THRESHOLD)
+    {
+        // flush the pipe by reading the remaining data
+        char buf[1024];
+        while (read(mPipe, buf, sizeof(buf)) > 0)
+        {
+            // do nothing, just read the data
+        }
+        std::cout << "Pipe flushed!" << std::endl;
+    }
 }

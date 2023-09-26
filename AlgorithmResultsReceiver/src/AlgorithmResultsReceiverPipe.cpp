@@ -19,7 +19,7 @@ AlgorithmResultsReceiverPipe::AlgorithmResultsReceiverPipe(const std::string &pi
     }
 }
 
-const bool AlgorithmResultsReceiverPipe::receiveAlgorithmResults(AlgorithmResults &algorithmResults) const
+const bool AlgorithmResultsReceiverPipe::receiveAlgorithmResults(AlgorithmResults &algorithmResults)
 {
     // read the size of the struct first
     size_t size;
@@ -33,8 +33,6 @@ const bool AlgorithmResultsReceiverPipe::receiveAlgorithmResults(AlgorithmResult
     {
         return false;
     }
-
-    std::cout << "Data Receiver: " << algorithmResults.frameCount << std::endl;
 
     return true;
 }
